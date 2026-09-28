@@ -9,34 +9,42 @@ on:
         default: "ubuntu-latest"
       sourceSubscriptionId:
         description: "Source APIM subscription ID"
+        default: ""
         required: true
         type: string
       sourceResourceGroupName:
         description: "Source APIM resource group name"
+        default: ""
         required: true
         type: string
       sourceServiceName:
         description: "Source APIM service name"
+        default: ""
         required: true
         type: string
       sourceAzureTenantId:
         description: "Source Azure tenant ID"
+        default: ""
         required: true
         type: string
       destSubscriptionId:
         description: "Destination APIM subscription ID"
+        default: ""
         required: true
         type: string
       destResourceGroupName:
         description: "Destination APIM resource group name"
+        default: ""
         required: true
         type: string
       destServiceName:
         description: "Destination APIM service name"
+        default: ""
         required: true
         type: string
       destAzureTenantId:
         description: "Destination Azure tenant ID"
+        default: ""
         required: true
         type: string
       existingEnvUrls:
@@ -81,10 +89,10 @@ jobs:
           --destSubscriptionId "${{ inputs.destSubscriptionId }}"
           --destResourceGroupName "${{ inputs.destResourceGroupName }}"
           --sourceTenantId "${{ inputs.sourceAzureTenantId }}"
-          --sourceServicePrincipal "${{ secrets.SOURCE_SERVICE_PRINCIPAL }}"
+          --sourceServicePrincipal "${{ vars.SOURCE_SERVICE_PRINCIPAL }}"
           --sourceServicePrincipalSecret "${{ secrets.SOURCE_SERVICE_PRINCIPAL_SECRET }}"
           --destTenantId "${{ inputs.destAzureTenantId }}"
-          --destServicePrincipal "${{ secrets.DEST_SERVICE_PRINCIPAL }}"
+          --destServicePrincipal "${{ vars.DEST_SERVICE_PRINCIPAL }}"
           --destServicePrincipalSecret "${{ secrets.DEST_SERVICE_PRINCIPAL_SECRET }}"
 
       - name: Update content URLs
@@ -97,5 +105,5 @@ jobs:
           --destSubscriptionId "${{ inputs.destSubscriptionId }}"
           --destResourceGroupName "${{ inputs.destResourceGroupName }}"
           --destTenantId "${{ inputs.destAzureTenantId }}"
-          --destServicePrincipal "${{ secrets.DEST_SERVICE_PRINCIPAL }}"
+          --destServicePrincipal "${{ vars.DEST_SERVICE_PRINCIPAL }}"
           --destSecret "${{ secrets.DEST_SERVICE_PRINCIPAL_SECRET }}"
