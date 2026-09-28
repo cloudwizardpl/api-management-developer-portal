@@ -1,0 +1,99 @@
+name: Migrate APIM Developer Portal
+
+on:
+  workflow_dispatch:
+    inputs:
+      runner:
+        description: "Runner label (for example: ubuntu-latest or self-hosted)"
+        required: true
+        default: "ubuntu-latest"
+      sourceSubscriptionId:
+        description: "Source APIM subscription ID"
+        required: true
+        type: string
+      sourceResourceGroupName:
+        description: "Source APIM resource group name"
+        required: true
+        type: string
+      sourceServiceName:
+        description: "Source APIM service name"
+        required: true
+        type: string
+      sourceAzureTenantId:
+        description: "Source Azure tenant ID"
+        required: true
+        type: string
+      destSubscriptionId:
+        description: "Destination APIM subscription ID"
+        required: true
+        type: string
+      destResourceGroupName:
+        description: "Destination APIM resource group name"
+        required: true
+        type: string
+      destServiceName:
+        description: "Destination APIM service name"
+        required: true
+        type: string
+      destAzureTenantId:
+        description: "Destination Azure tenant ID"
+        required: true
+        type: string
+      existingEnvUrls:
+        description: "Comma-separated source environment URLs to replace"
+        required: false
+        default: ""
+        type: string
+      destEnvUrls:
+        description: "Comma-separated destination environment URLs"
+        required: false
+        default: ""
+        type: string
+
+jobs:
+  migrate_apim_developer_portal:
+    name: Migrate APIM Developer Portal
+    runs-on: ${{ inputs.runner }}
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run migrate command
+        working-directory: scripts.v3
+        run: >-
+          node ./migrate
+          --sourceSubscriptionId "${{ inputs.sourceSubscriptionId }}"
+          --sourceResourceGroupName "${{ inputs.sourceResourceGroupName }}"
+          --sourceServiceName "${{ inputs.sourceServiceName }}"
+          --destServiceName "${{ inputs.destServiceName }}"
+          --destSubscriptionId "${{ inputs.destSubscriptionId }}"
+          --destResourceGroupName "${{ inputs.destResourceGroupName }}"
+          --sourceTenantId "${{ inputs.sourceAzureTenantId }}"
+          --sourceServicePrincipal "${{ secrets.SOURCE_SERVICE_PRINCIPAL }}"
+          --sourceServicePrincipalSecret "${{ secrets.SOURCE_SERVICE_PRINCIPAL_SECRET }}"
+          --destTenantId "${{ inputs.destAzureTenantId }}"
+          --destServicePrincipal "${{ secrets.DEST_SERVICE_PRINCIPAL }}"
+          --destServicePrincipalSecret "${{ secrets.DEST_SERVICE_PRINCIPAL_SECRET }}"
+
+      - name: Update content URLs
+        working-directory: scripts.v3
+        run: >-
+          node ./updatecontenturl
+          --existingEnvUrls "${{ inputs.existingEnvUrls }}"
+          --destEnvUrls "${{ inputs.destEnvUrls }}"
+          --destServiceName "${{ inputs.destServiceName }}"
+          --destSubscriptionId "${{ inputs.destSubscriptionId }}"
+          --destResourceGroupName "${{ inputs.destResourceGroupName }}"
+          --destTenantId "${{ inputs.destAzureTenantId }}"
+          --destServicePrincipal "${{ secrets.DEST_SERVICE_PRINCIPAL }}"
+          --destSecret "${{ secrets.DEST_SERVICE_PRINCIPAL_SECRET }}"
