@@ -55,6 +55,8 @@ jobs:
     name: Migrate APIM Developer Portal
     runs-on: ${{ inputs.runner }}
     timeout-minutes: 90
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout code
