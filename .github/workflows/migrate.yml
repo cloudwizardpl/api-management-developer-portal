@@ -9,42 +9,42 @@ on:
         default: "ubuntu-latest"
       sourceSubscriptionId:
         description: "Source APIM subscription ID"
-        default: ""
+        default: "4a25a19a-202e-490f-bf1a-5ac728142580"
         required: true
         type: string
       sourceResourceGroupName:
         description: "Source APIM resource group name"
-        default: ""
+        default: "GLOBAL-DIA-COMMON-TEST"
         required: true
         type: string
       sourceServiceName:
         description: "Source APIM service name"
-        default: ""
+        default: "puma-dia-apim-test"
         required: true
         type: string
       sourceAzureTenantId:
         description: "Source Azure tenant ID"
-        default: ""
+        default: "cf404960-c50f-46d2-8bf3-a3c957283b86"
         required: true
         type: string
       destSubscriptionId:
         description: "Destination APIM subscription ID"
-        default: ""
+        default: "4a25a19a-202e-490f-bf1a-5ac728142580"
         required: true
         type: string
       destResourceGroupName:
         description: "Destination APIM resource group name"
-        default: ""
+        default: "GLOBAL-DIA-COMMON-TEST"
         required: true
         type: string
       destServiceName:
         description: "Destination APIM service name"
-        default: ""
+        default: "puma-dia-apim-v2-test"
         required: true
         type: string
       destAzureTenantId:
         description: "Destination Azure tenant ID"
-        default: ""
+        default: "cf404960-c50f-46d2-8bf3-a3c957283b86"
         required: true
         type: string
       existingEnvUrls:
